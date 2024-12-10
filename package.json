@@ -1,5 +1,5 @@
 {
-  "name": "doomsday-depot",
+  "name": "doomsday_depot",
   "version": "1.0.0",
   "description": "",
   "main": "server/dist/server.js",
