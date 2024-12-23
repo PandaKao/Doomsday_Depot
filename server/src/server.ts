@@ -9,6 +9,7 @@ import path from "node:path";
 import Stripe from "stripe";
 import cors from "cors";
 import { ChatOpenAI } from "@langchain/openai";
+import "./utils/dealsGenerator.js";
 
 import dotenv from "dotenv";
 dotenv.config();
