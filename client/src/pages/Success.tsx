@@ -70,7 +70,7 @@ const PurchaseSuccessPage: React.FC = () => {
 
                                 <div className="flex-1 text-right">
                                     <p className="text-emerald-400 font-bold">{item.product.name}</p>
-                                    <p className="text-gray-400">Price: ${item.product.price.toFixed(2)}</p>
+                                    <p className="text-gray-400">Price: ${item.product.salePrice.toFixed(2)}</p>
                                     <p className="text-gray-400">Quantity: {item.quantity}</p>
                                 </div>
                             </div>
