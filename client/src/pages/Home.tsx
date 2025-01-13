@@ -18,13 +18,13 @@ const Home: React.FC = () => {
   const handleAddToCart = async (deal: IDeal) => {
     await addBasketItem({
       variables: { productId: deal._id, quantity: 1 },
-      refetchQueries: [{query: GET_ME }],
+      refetchQueries: [{ query: GET_ME }],
     });
   };
 
   // Fetch categories using the Apollo Client query
   const { loading: loadingCategories, error: errorCategories, data: dataCategories } = useQuery(GET_CATEGORIES);
-  const { loading: loadingProducts, error: errorProducts, data: dataProducts } = useQuery(GET_PRODUCTS);
+  const { loading: loadingProducts, error: errorProducts, data: dataProducts, refetch } = useQuery(GET_PRODUCTS);
 
   useToast({
     loading: loadingCategories || loadingProducts,
@@ -51,6 +51,10 @@ const Home: React.FC = () => {
       stock: product.stock,
     }));
   }
+
+  const refetchDeals = () => {
+    refetch();
+  };
 
   const handleOpenModal = (deal: IDeal) => {
     setSelectedDeal(deal);
@@ -92,7 +96,7 @@ const Home: React.FC = () => {
         <p className="text-center text-xl sm:text-xl font-bold text-gray-200 mb-12 italic leading-relaxed text-shadow-lg">
           Grab these exclusive deals before they're gone!
         </p>
-        <DealCarousel deal={deals} onOpenModal={handleOpenModal} />
+        <DealCarousel deal={deals} refetchDeals={refetchDeals} onOpenModal={handleOpenModal} />
       </div>
 
       {/* Modal */}
