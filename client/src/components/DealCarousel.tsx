@@ -8,10 +8,11 @@ import Button from "./Button";
 
 type DealCarouselProps = {
     deal: IDeal[];
+    refetchDeals: () => void;
     onOpenModal: (deal: IDeal) => void;
 };
 
-const DealCarousel: React.FC<DealCarouselProps> = ({ deal, onOpenModal }) => {
+const DealCarousel: React.FC<DealCarouselProps> = ({ deal, refetchDeals, onOpenModal }) => {
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
     const swiperInstance = useRef<any>(null);
@@ -51,7 +52,7 @@ const DealCarousel: React.FC<DealCarouselProps> = ({ deal, onOpenModal }) => {
             >
                 {deal.map((dealItem) => (
                     <SwiperSlide key={dealItem.name}> 
-                        <DealItem deal={dealItem} onOpenModal={onOpenModal} />
+                        <DealItem deal={dealItem} refetchDeals={refetchDeals} onOpenModal={onOpenModal} />
                     </SwiperSlide>
                 ))}
             </Swiper>

@@ -6,10 +6,11 @@ import { IDeal } from "../interfaces/Deal";
 
 type DealItemProps = {
     deal: IDeal;
+    refetchDeals: () => void;
     onOpenModal: (deal: IDeal) => void;
 };
 
-const DealItem: React.FC<DealItemProps> = ({ deal, onOpenModal }) => {
+const DealItem: React.FC<DealItemProps> = ({ deal, refetchDeals, onOpenModal }) => {
     const formattedRating = deal.rating % 1 === 0 ? deal.rating.toFixed(0) : deal.rating.toFixed(1);
     const [countdown, setCountdown] = useState<string>('');
 
@@ -34,13 +35,19 @@ const DealItem: React.FC<DealItemProps> = ({ deal, onOpenModal }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCountdown(calculateCountdown(deal.onSaleDate));
+
+            // trigger refetch if deal expires
+            if (calculateCountdown(deal.onSaleDate) === 'Deal expired') {
+                clearInterval(interval);
+                refetchDeals();
+            }    
         }, 1000); // updates every second
 
         // Initial countdown
         setCountdown(calculateCountdown(deal.onSaleDate));
 
         return () => clearInterval(interval);
-    }, [deal.onSaleDate]);
+    }, [deal.onSaleDate, refetchDeals]);
 
     return (
         <>
