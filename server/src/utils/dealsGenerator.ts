@@ -2,17 +2,19 @@ import cron from "node-cron";
 import { Product } from "../models/index.js";
 
 export const dealsUpdate = () => {
-    cron.schedule('* * * * *', async () => {
-        console.log("cron running every minute");
+    cron.schedule('0 0 * * *', async () => {
+        console.log("cron running every day");
 
         try {
             const expiredProducts = await Product.find({ onSaleDate: { $lt: new Date() } });
-            const randomProducts = expiredProducts.sort(() => 0.5 - Math.random()).slice(0, 9);
+            const randomProducts = await Product.aggregate([
+                { $match: { onSaleDate: { $lt: new Date() } } },
+                { $sample: { size: 9 } }
+            ]);
 
             const updatedProducts = await Promise.all(randomProducts.map(product =>
                 Product.findByIdAndUpdate(product._id, {
-                    // onSaleDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
-                    onSaleDate: new Date(Date.now() + 1000 * 60),
+                    onSaleDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
                 }, { new: true })
             ));
 
