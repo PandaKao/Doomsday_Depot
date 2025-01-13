@@ -9,7 +9,6 @@ import path from "node:path";
 import Stripe from "stripe";
 import cors from "cors";
 import { ChatOpenAI } from "@langchain/openai";
-import { dealsUpdate } from "./utils/dealsGenerator.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -75,8 +74,6 @@ const startApolloServer = async () => {
       res.status(500).send('Error generating AI response');
     }
   });
-
-  dealsUpdate();
 
   app.use(
     "/graphql",

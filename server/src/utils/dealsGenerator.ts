@@ -1,24 +1,25 @@
-import cron from "node-cron";
 import { Product } from "../models/index.js";
 
-export const dealsUpdate = () => {
-    cron.schedule('* * * * *', async () => {
-        console.log("cron running every minute");
+const dealsUpdate = async () => {
 
-        try {
-            const expiredProducts = await Product.find({ onSaleDate: { $lt: new Date() } });
-            const randomProducts = expiredProducts.sort(() => 0.5 - Math.random()).slice(0, 9);
+    console.log("Starting deals update...");
 
-            const updatedProducts = await Promise.all(randomProducts.map(product =>
-                Product.findByIdAndUpdate(product._id, {
-                    // onSaleDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
-                    onSaleDate: new Date(Date.now() + 1000 * 60),
-                }, { new: true })
-            ));
+    try {
+        const expiredProducts = await Product.find({ onSaleDate: { $lt: new Date() } });
+        const randomProducts = expiredProducts.sort(() => 0.5 - Math.random()).slice(0, 9);
 
-            console.log("Updated products: ", updatedProducts);
-        } catch (err) {
-            console.error('Error updating products: ', err);
-        }
-    });
+        const updatedProducts = await Promise.all(randomProducts.map(product =>
+            Product.findByIdAndUpdate(product._id, {
+                onSaleDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            }, { new: true })
+        ));
+
+        console.log("Updated products: ", updatedProducts);
+        process.exit(0);
+    } catch (err) {
+        console.error('Error updating products: ', err);
+        process.exit(1);
+    }
 };
+
+dealsUpdate();
