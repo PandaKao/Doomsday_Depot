@@ -2,7 +2,7 @@ import cron from "node-cron";
 import { Product } from "../models/index.js";
 
 export const dealsUpdate = () => {
-    cron.schedule('* * * * *', async () => {
+    cron.schedule('0 * * * *', async () => {
         console.log("cron running every minute");
 
         try {
