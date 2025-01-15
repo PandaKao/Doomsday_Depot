@@ -2,7 +2,7 @@ import cron from "node-cron";
 import { Product } from "../models/index.js";
 
 export const dealsUpdate = () => {
-    cron.schedule('0 * * * *', async () => {
+    cron.schedule('* * * * *', async () => {
         console.log("cron running every minute");
 
         try {
@@ -19,7 +19,7 @@ export const dealsUpdate = () => {
 
             const updatedProducts = await Promise.all(randomProducts.map(product =>
                 Product.findByIdAndUpdate(product._id, {
-                    onSaleDate: new Date(Date.now() + 1000 * 60 * 60 * 23),
+                    onSaleDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
                 }, { new: true })
             ));
 
